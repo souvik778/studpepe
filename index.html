@@ -20,12 +20,14 @@
       box-sizing: border-box;
     }
 
+
     /* GLOBAL STYLES */
     body {
       font-family: "Roboto", sans-serif;
       color: #fff;
       background-color: #000;
       font-size: 1.1rem; /* Increase base font size for improved readability */
+      
     }
 
     p {
@@ -62,12 +64,14 @@
 
     /* OVERLAY FOR TEXT */
     .overlay {
+
       background: rgba(0, 0, 0, 0.7);
-      padding: 60px;
+      padding: 50px;
       border-radius: 8px;
-      max-width: 800px;
+      max-width: 700px;
       width: 90%;
       text-align: center;
+      justify-content: center;
       position: relative;
       z-index: 2;
       transition: 
@@ -583,7 +587,7 @@
         class="decorative-img left"
       />
       <div class="overlay">
-        <div class="logo" onclick="window.location.href='#home'">Welcome to Studpepe</div>
+        <div class="logo" styles="text-align: center">Welcome to Studpepe</div>
     <br><br><h1>It is</h1>
         <div class="dynamic-text">
           <span class="active">Here</span>
@@ -660,7 +664,7 @@
     <section id="how-to-buy">
       <!-- Decorative Image (Left) -->
       <img
-        src="7.png"
+        src="logo.png"
         alt="Decorative Left"
         class="decorative-img right"
       />
