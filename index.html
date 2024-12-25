@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>StudPepe - The Ultimate Memecoin</title>
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@400;500;700&family=Pacifico&family=Oswald&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* BASIC RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* GLOBAL STYLES */
+    body {
+      font-family: "Roboto", sans-serif;
+      color: #fff;
+      background-color: #000;
+      font-size: 1.1rem; /* Increase base font size for improved readability */
+    }
+
+    /* Make paragraphs slightly larger & more spaced-out */
+    p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+    }
+
+    /* FULLPAGE CONTAINER WITH SCROLL SNAP */
+    .fullpage-container {
+      height: 100vh;
+      width: 100vw;
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+      scroll-behavior: smooth;
+      position: relative;
+    }
+
+    /* SECTION STYLES */
+    section {
+      min-height: 100vh;
+      width: 100vw;
+      scroll-snap-align: start;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed; /* Will be overridden in smaller screens */
+      padding: 20px;
+      overflow: hidden; /* Keep absolutely positioned images contained */
+      opacity: 0;       /* We'll fade this in with Intersection Observer */
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease; /* for fade-in */
+    }
+    /* We'll add a 'visible' class in JavaScript for the fade-in effect. */
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Overlay for better text readability */
+    .overlay {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 60px;
+      border-radius: 8px;
+      max-width: 800px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      transition: 
+        transform 0.3s ease, 
+        box-shadow 0.3s ease, 
+        background-color 0.3s ease;
+    }
+
+    /* HOVER FEEDBACK FOR OVERLAYS */
+    .overlay:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 15px rgba(26, 188, 156, 0.4);
+    }
+
+    /* FADE-IN ANIMATION (for About Us or anywhere else) */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Dynamic Text Styling */
+    .dynamic-text {
+      font-family: "Oswald", sans-serif;
+      font-size: 3rem;
+      font-weight: 700;
+      color: #1abc9c;
+      margin: 20px 0;
+      height: 3.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .dynamic-text span {
+      position: absolute;
+      opacity: 0;
+      transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    }
+    .dynamic-text span.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .dynamic-text span.exiting {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    /* Buttons Styling */
+    .buttons {
+      margin-top: 30px;
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .buttons a {
+      padding: 15px 30px;
+      background-color: #1abc9c;
+      color: #fff;
+      text-decoration: none;
+      font-family: "Oswald", sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 5px;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    }
+    /* Glow effect on hover */
+    .buttons a:hover {
+      background-color: #16a085;
+      transform: translateY(-3px);
+      box-shadow: 0 0 10px #1abc9c, 0 0 20px #1abc9c;
+    }
+    .buttons a:active {
+      transform: translateY(0);
+      background-color: #149174;
+      box-shadow: none;
+    }
+
+    /* Decorative Images */
+    .decorative-img {
+      position: absolute;
+      top: 80%;
+      transform: translateY(-50%) scale(0.8);
+      width: 300px;
+      height: 300px;
+      object-fit: contain;
+      z-index: 1;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+      pointer-events: none; /* So it won't block clicks */
+      opacity: 0.8;        /* slightly see-through */
+    }
+    .decorative-img.left {
+      left: 50px;
+    }
+    .decorative-img.right {
+      right: 50px;
+    }
+    /* Bump final scale to 1.1 to minimize overlap */
+    .decorative-img.in-view {
+      transform: translateY(-50%) scale(1.1);
+    }
+    /* Add a fun bounce (pop) effect on hover + slight glow pulse */
+    .decorative-img:hover {
+      animation: pop 0.6s infinite alternate, pulseGlow 2s infinite ease-in-out;
+    }
+    @keyframes pop {
+      0%   { transform: translateY(-50%) scale(1.1); }
+      100% { transform: translateY(-50%) scale(1.15);}
+    }
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0px #1abc9c; }
+      50% { box-shadow: 0 0 20px #1abc9c; }
+      100% { box-shadow: 0 0 0px #1abc9c; }
+    }
+
+    /* NAVIGATION */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      /* NICE GRADIENT + slight transparency */
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(26, 188, 156, 0.3));
+      padding: 1rem 2rem;
+      z-index: 1001;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.4s ease;
+    }
+    nav:hover {
+      /* Slight glow effect when hovering near nav */
+      box-shadow: 0 0 10px #1abc9c;
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      /* 
+         Center the entire nav row, including 
+         the logo & nav links/hamburger 
+      */
+      justify-content: center; 
+      align-items: center;
+      position: relative; /* we can position child elements inside if needed */
+    }
+    .logo {
+      font-family: "Pacifico", cursive;
+      font-size: 2.5rem;
+      font-weight: 400;
+      color: #fff;
+      cursor: pointer;
+      margin-right: 3rem; /* spacing from the nav links */
+      transition: transform 0.3s;
+    }
+    /* Spinning logo on hover for fun */
+    .logo:hover {
+      animation: spin 1.2s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Desktop Navigation Links */
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-family: "Oswald", sans-serif;
+      font-weight: 600;
+      font-size: 1.3rem;
+      transition: color 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: "";
+      display: block;
+      width: 0;
+      height: 2px;
+      background: #1abc9c;
+      transition: width 0.3s;
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+    }
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+    .nav-links a:hover {
+      color: #1abc9c;
+      transform: translateY(-3px);
+      text-shadow: 0 0 10px #1abc9c;
+    }
+
+    /* HAMBURGER MENU STYLES */
+    .hamburger {
+      display: none; /* shown on mobile with a media query */
+      flex-direction: column;
+      cursor: pointer;
+      width: 35px;
+      height: 30px;
+      justify-content: space-between;
+      z-index: 1002;
+      position: absolute;
+      right: 20px; /* place it on the right side, but can be changed */
+    }
+    .hamburger div {
+      width: 100%;
+      height: 5px;
+      background-color: #fff;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* Mobile Navigation Links */
+    .mobile-nav {
+      display: none;
+      flex-direction: column;
+      gap: 1.5rem;
+      background: rgba(0, 0, 0, 0.95);
+      position: absolute;
+      top: 70px; /* Height of nav */
+      left: 50%;
+      transform: translateX(-50%); /* center horizontally */
+      width: 90%;
+      max-width: 600px;
+      padding: 1.5rem 2rem;
+      z-index: 1000;
+      text-align: center; /* center the nav items */
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .mobile-nav a {
+      color: #fff;
+      text-decoration: none;
+      font-family: "Oswald", sans-serif;
+      font-weight: 600;
+      font-size: 1.5rem;
+      transition: color 0.3s ease, transform 0.3s ease;
+      position: relative;
+    }
+    .mobile-nav a::after {
+      content: "";
+      display: block;
+      width: 0;
+      height: 2px;
+      background: #1abc9c;
+      transition: width 0.3s;
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+    }
+    .mobile-nav a:hover::after {
+      width: 100%;
+    }
+    .mobile-nav a:hover {
+      color: #1abc9c;
+      transform: translateX(10px);
+      text-shadow: 0 0 10px #1abc9c;
+    }
+
+    /* CUSTOM SECTION STYLING */
+    .custom-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 60px;
+      background-color: rgba(52, 152, 219, 0.8); /* Light blue with transparency */
+      color: #fff;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 600;
+      border-radius: 8px;
+      margin: 20px;
+      text-align: center;
+      max-width: 1000px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .custom-section:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* FOOTER */
+    footer {
+      flex-shrink: 0;
+      display: block;
+      text-align: center;
+      padding: 30px;
+      background: #2c3e50;
+      font-size: 1.5rem;
+      color: #bdc3c7;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 500;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* BACKGROUND IMAGES FOR SECTIONS */
+    #home {
+      background-image: url("1.jpg");
+    }
+    #tokenomics {
+      background-image: url("2.jpg");
+    }
+    #about {
+      background-image: url("3.jpg");
+    }
+    #roadmap {
+      background-image: url("4.jpg");
+    }
+    #how-to-buy {
+      background-image: url("5.jpg");
+    }
+
+    /* SMOOTH SCROLLING */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* TRANSITION FOR MOBILE NAV */
+    .mobile-nav.show {
+      display: flex;
+      animation: fadeIn 0.4s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -10px);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+
+    /* HAMBURGER ACTIVE STATE */
+    .hamburger.active div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active div:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active div:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    /* WHEN HAMBURGER NAV IS ACTIVE, HIDE ALL DECORATIVE IMAGES */
+    .mobile-nav.show ~ .fullpage-container section .decorative-img {
+      display: none !important;
+    }
+
+    /* ANIMATION FOR ROADMAP SECTION */
+    .roadmap-content, .solid-proof-btn {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+    .roadmap-content.in-view, .solid-proof-btn.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Style the Solid Proof button in Roadmap */
+    .solid-proof-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 15px 30px;
+      background-color: #3498db;
+      color: #fff;
+      text-decoration: none;
+      font-family: "Oswald", sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      border-radius: 5px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .solid-proof-btn:hover {
+      background-color: #2980b9;
+      transform: translateY(-3px);
+    }
+
+    /* MORE INTERACTIVE ROADMAP: TIMELINE STYLE */
+    .timeline {
+      position: relative;
+      margin: 40px auto;
+      padding: 0;
+      list-style-type: none;
+      max-width: 600px;
+      text-align: left;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 30px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: #1abc9c;
+      opacity: 0.6;
+    }
+    .timeline-item {
+      position: relative;
+      margin: 20px 0 20px 60px;
+    }
+    .timeline-item h3 {
+      font-family: "Oswald", sans-serif;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #1abc9c;
+    }
+    .timeline-item p {
+      margin-bottom: 10px;
+      font-family: "Montserrat", sans-serif;
+      line-height: 1.6;
+    }
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -36px;
+      top: 5px;
+      width: 20px;
+      height: 20px;
+      background: #1abc9c;
+      border-radius: 50%;
+      border: 2px solid #fff;
+    }
+
+    /* ACCORDION STYLING FOR "HOW TO BUY" SECTION */
+    .accordion {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .accordion-item {
+      background-color: rgba(0, 0, 0, 0.5);
+      margin-bottom: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .accordion-header {
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      font-family: "Oswald", sans-serif;
+      font-size: 1.3rem;
+      user-select: none;
+    }
+    .accordion-header h3 {
+      margin: 0;
+      color: #1abc9c;
+    }
+    .accordion-content {
+      height: 0;
+      overflow: hidden;
+      transition: height 0.5s ease;
+      padding: 0 20px;
+    }
+    .accordion-content p {
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+    .accordion-item.active .accordion-content {
+      height: auto; /* allows the content to expand to its full height */
+      padding-bottom: 15px;
+    }
+    .accordion-header span.toggle-icon {
+      font-size: 1.5rem;
+      color: #fff;
+      transition: transform 0.3s ease;
+    }
+    .accordion-item.active .accordion-header span.toggle-icon {
+      transform: rotate(45deg);
+    }
+    .step-img {
+      width: 100%;
+      max-width: 250px;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* STYLE HEADINGS FOR TOKENOMICS & ABOUT US */
+    #tokenomics h2,
+    #about h2 {
+      font-weight: 800;     /* Increase the font weight */
+      font-size: 2.4rem;    /* Adjust heading size */
+      color: #1abc9c;       /* Choose your color */
+      letter-spacing: 1px;  /* Optional - spacing effect */
+      text-transform: uppercase; /* Optional - make it uppercase */
+      margin-bottom: 1rem;  /* Space below heading */
+    }
+
+    /* MEDIA QUERIES */
+    @media (max-width: 1200px) {
+      .hamburger {
+        display: flex; /* Show hamburger menu on screens <=1200px */
+      }
+      /* Hide desktop links */
+      .nav-links {
+        display: none; 
+      }
+      .decorative-img {
+        width: 250px; 
+        height: 250px;
+      }
+      .decorative-img.left {
+        left: 30px;
+      }
+      .decorative-img.right {
+        right: 30px;
+      }
+      /* Switch background-attachment to scroll at smaller screens */
+      section {
+        background-attachment: scroll;
+      }
+      /* Hide the decorative images on smaller tablets to prevent overlap */
+      .decorative-img {
+        display: none; 
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .logo {
+        font-size: 2rem;
+      }
+      .overlay {
+        padding: 40px;
+      }
+      .custom-section {
+        padding: 40px;
+      }
+      footer {
+        font-size: 1.2rem;
+      }
+      .decorative-img {
+        width: 200px;
+        height: 200px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .logo {
+        font-size: 1.8rem;
+      }
+      .custom-section {
+        padding: 30px;
+      }
+      footer {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVIGATION BAR -->
+  <nav>
+    <div class="nav-container">
+      <div class="logo">StudPepe</div>
+      
+      <!-- Desktop Nav Links -->
+      <ul class="nav-links">
+        <li><a href="#tokenomics">Tokenomics</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+        <li><a href="#how-to-buy">How to Buy</a></li>
+        <li>
+          <a href="solidProof.pdf" target="_blank">Solid Proof</a>
+        </li>
+      </ul>
+
+      <!-- Hamburger Menu Icon (hidden on desktop, shown on mobile) -->
+      <div class="hamburger" id="hamburger" aria-label="Toggle navigation">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Links (centered) -->
+    <ul class="mobile-nav" id="mobile-nav">
+      <li><a href="#tokenomics" onclick="toggleMobileNav()">Tokenomics</a></li>
+      <li><a href="#about" onclick="toggleMobileNav()">About</a></li>
+      <li><a href="#roadmap" onclick="toggleMobileNav()">Roadmap</a></li>
+      <li><a href="#how-to-buy" onclick="toggleMobileNav()">How to Buy</a></li>
+      <li><a href="solidProof.pdf" target="_blank" onclick="toggleMobileNav()">Solid Proof</a></li>
+    </ul>
+  </nav>
+
+  <!-- FULLPAGE CONTAINER -->
+  <div class="fullpage-container">
+    <!-- HOME SECTION -->
+    <section id="home">
+      <!-- Decorative Image (Left only for #home) -->
+      <img
+        src="8.png"
+        alt="Decorative Left"
+        class="decorative-img left"
+      />
+      <div class="overlay">
+        <h2>Welcome to StudPepe<br><br>It is</h2>
+        <div class="dynamic-text">
+          <span class="active">Here</span>
+          <span>Secure</span>
+          <span>tax free</span>
+          <span></span>
+     
+          <span>decentralized </span>
+          <span>fun</span>
+          <span>easy to trade</span>
+          <span>yours</span>
+        </div>
+        <div class="buttons">
+          <a href="https://dexscreener.com" target="_blank">Trade on DEX</a>
+          <a href="https://phantom.app/download" target="_blank">Download Phantom</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOKENOMICS SECTION -->
+    <section id="tokenomics">
+      <!-- Decorative Image (Right only for #tokenomics) -->
+      <img
+        src="7.png"
+        alt="Decorative Right"
+        class="decorative-img right"
+      />
+      <div class="overlay">
+        <h2>Tokenomics</h2>
+        <p><strong>Total Supply:</strong> 1 Billion</p>
+        <p><strong>LP:</strong> Burnt</p>
+        <p><strong>Tax:</strong> 0/0 (buy and sell)</p>
+      </div>
+    </section>
+
+    <!-- HOW TO BUY SECTION -->
+    <section id="how-to-buy">
+      <!-- Decorative Image (Left) -->
+      <img
+        src="8.png"
+        alt="Decorative Left"
+        class="decorative-img left"
+      />
+      <div class="overlay">
+        <h2>How to Buy</h2>
+        <!-- ACCORDION FOR STEPS -->
+        <div class="accordion" id="accordion">
+          <!-- STEP 1 -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <h3>Step 1</h3>
+              <span class="toggle-icon">+</span>
+            </div>
+            <div class="accordion-content">
+              <img src="11.png" alt="Step 1 Illustration" class="step-img" />
+              <p>
+                Download the Phantom wallet from the official website or app store. 
+                Create your wallet and fund it with SOL.
+              </p>
+            </div>
+          </div>
+          <!-- STEP 2 -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <h3>Step 2</h3>
+              <span class="toggle-icon">+</span>
+            </div>
+            <div class="accordion-content">
+              <img src="12.png" alt="Step 2 Illustration" class="step-img" />
+              <p>
+                Connect your Phantom wallet to Raydium. Locate the $STUDPEPE 
+                trading pair and swap SOL for $STUDPEPE.
+              </p>
+            </div>
+          </div>
+          <!-- STEP 3 -->
+          <div class="accordion-item">
+            <div class="accordion-header">
+              <h3>Step 3</h3>
+              <span class="toggle-icon">+</span>
+            </div>
+            <div class="accordion-content">
+              <img src="13.png" alt="Step 3 Illustration" class="step-img" />
+              <p>
+                Track your $STUDPEPE balance in your Phantom wallet. Keep an eye
+                on the price action and watch your tokens grow!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROADMAP SECTION -->
+    <section id="roadmap">
+      <!-- Decorative Image (Right) -->
+      <img
+        src="7.png"
+        alt="Decorative Right"
+        class="decorative-img right"
+      />
+      <div class="overlay">
+        <div class="roadmap-content">
+          <h2>Our Roadmap</h2>
+          <ul class="timeline">
+            <li class="timeline-item">
+              <h3>Q1 December 2024</h3>
+              <p>Launch of StudPepe, listing on dexscreenerand pump.fun for initial community building</p>
+            </li>
+            <li class="timeline-item">
+              <h3>Q2 Jan 2025</h3>
+              <p>Introduction of staking rewards through Solbank</p>
+            </li>
+            <li class="timeline-item">
+              <h3>Q3 March 2024</h3>
+              <p>listing on CMC, Coinabse, Crypto.com</p>
+            </li>
+            <li class="timeline-item">
+              <h3>Q4 July 2024</h3>
+              <p>launch of StudPepe merchandise, and continuous community engagement</p>
+            </li>
+          </ul>
+        </div>
+        <a
+          href="solidProof.pdf"
+          target="_blank"
+          class="solid-proof-btn"
+        >
+          View Solid Proof (PDF)
+        </a>
+      </div>
+    </section>
+
+    <!-- ABOUT US SECTION (with fade-in class) -->
+    <section id="about">
+      <!-- Decorative Image (Left) -->
+      <img
+        src="6.png"
+        alt="Decorative Left"
+        class="decorative-img left"
+      />
+      <!-- Added the 'fade-in' class to the overlay for the interactive effect -->
+      <div class="overlay fade-in">
+        <h2>About Us</h2>
+        <p>
+          StudPepe is more than just a memecoin; it's a movement. Leveraging the
+          widespread appeal of Pepe the Frog, StudPepe aims to create a
+          decentralized community where every member has a voice. Our team is
+          dedicated to ensuring transparency, security, and continuous growth
+          through strategic partnerships and innovative features.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>🚀 Join the StudPepe community and be part of the memecoin revolution! 🚀</p>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    // Hamburger Menu
+    const hamburger = document.getElementById("hamburger");
+    const mobileNav = document.getElementById("mobile-nav");
+
+    function toggleMobileNav() {
+      mobileNav.classList.toggle("show");
+      hamburger.classList.toggle("active");
+    }
+
+    hamburger.addEventListener("click", toggleMobileNav);
+
+    // Close mobile nav when clicking outside
+    window.addEventListener("click", function (event) {
+      if (!hamburger.contains(event.target) && !mobileNav.contains(event.target)) {
+        if (mobileNav.classList.contains("show")) {
+          toggleMobileNav();
+        }
+      }
+    });
+
+    // Dynamic Text Animation
+    const dynamicText = document.querySelectorAll(".dynamic-text span");
+    let currentIndex = 0;
+    const totalWords = dynamicText.length;
+    const intervalTime = 2000; // 2 seconds
+
+    function showNextWord() {
+      dynamicText[currentIndex].classList.remove("active");
+      dynamicText[currentIndex].classList.add("exiting");
+      currentIndex = (currentIndex + 1) % totalWords;
+      dynamicText[currentIndex].classList.add("active");
+      dynamicText[currentIndex].classList.remove("exiting");
+    }
+    dynamicText[currentIndex].classList.add("active");
+    setInterval(showNextWord, intervalTime);
+
+    // Animate Decorative Images on Scroll using Intersection Observer
+    const decorativeImages = document.querySelectorAll(".decorative-img");
+    const observerOptions = { threshold: 0.3 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+        } else {
+          entry.target.classList.remove("in-view");
+        }
+      });
+    }, observerOptions);
+    decorativeImages.forEach((img) => observer.observe(img));
+
+    // Animate Roadmap content on scroll
+    const roadmapContent = document.querySelector(".roadmap-content");
+    const solidProofBtn = document.querySelector(".solid-proof-btn");
+    const roadmapObserverOptions = { threshold: 0.1 };
+    const roadmapObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          roadmapContent.classList.add("in-view");
+          solidProofBtn.classList.add("in-view");
+        } else {
+          roadmapContent.classList.remove("in-view");
+          solidProofBtn.classList.remove("in-view");
+        }
+      });
+    }, roadmapObserverOptions);
+    roadmapObserver.observe(roadmapContent);
+    roadmapObserver.observe(solidProofBtn);
+
+    // ACCORDION FUNCTIONALITY FOR "HOW TO BUY" SECTION
+    const accordion = document.getElementById("accordion");
+    const accordionItems = accordion.querySelectorAll(".accordion-item");
+    accordionItems.forEach((item) => {
+      const header = item.querySelector(".accordion-header");
+      header.addEventListener("click", () => {
+        item.classList.toggle("active");
+        // Close other accordion items
+        accordionItems.forEach((otherItem) => {
+          if (otherItem !== item) {
+            otherItem.classList.remove("active");
+          }
+        });
+      });
+    });
+
+    // FADE-IN OBSERVER FOR ABOUT US
+    const aboutOverlay = document.querySelector("#about .overlay.fade-in");
+    const aboutObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          aboutOverlay.classList.add("in-view");
+        } else {
+          aboutOverlay.classList.remove("in-view");
+        }
+      });
+    }, { threshold: 0.2 });
+    aboutObserver.observe(aboutOverlay);
+
+    // FADE-IN SECTIONS: We'll observe each section for fade-in
+    const sections = document.querySelectorAll("section");
+    const secObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.15 });
+    sections.forEach((sec) => secObserver.observe(sec));
+  </script>
+</body>
+</html>
