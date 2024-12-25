@@ -32,7 +32,7 @@
       line-height: 1.8;
     }
 
-    /* CONTAINER & SECTIONS */
+    /* FULLPAGE CONTAINER & SECTIONS */
     .fullpage-container {
       width: 100vw;
       scroll-behavior: smooth;
@@ -59,7 +59,7 @@
       transform: translateY(0);
     }
 
-    /* Overlay for better text readability */
+    /* OVERLAY FOR TEXT */
     .overlay {
       background: rgba(0, 0, 0, 0.7);
       padding: 60px;
@@ -75,8 +75,8 @@
         background-color 0.3s ease;
     }
     .overlay:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 15px rgba(26, 188, 156, 0.4);
+      transform: scale(1.02);
+      box-shadow: 0 0 15px rgba(20, 160, 133, 0.3); /* Subtle glow */
     }
 
     /* FADE-IN ANIMATION */
@@ -90,7 +90,7 @@
       transform: translateY(0);
     }
 
-    /* Dynamic Text Styling */
+    /* DYNAMIC TEXT STYLING */
     .dynamic-text {
       font-family: "Oswald", sans-serif;
       font-size: 3rem;
@@ -118,7 +118,7 @@
       transform: translateY(20px);
     }
 
-    /* Buttons Styling */
+    /* BUTTONS STYLING (Subtle Hover) */
     .buttons {
       margin-top: 30px;
       display: flex;
@@ -135,20 +135,18 @@
       font-size: 1.2rem;
       font-weight: 600;
       border-radius: 5px;
-      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
     .buttons a:hover {
-      background-color: #16a085;
-      transform: translateY(-3px);
-      box-shadow: 0 0 10px #1abc9c, 0 0 20px #1abc9c;
+      background-color: #14A085; /* Subtle hover color */
+      transform: translateY(-2px);
     }
     .buttons a:active {
       transform: translateY(0);
-      background-color: #149174;
-      box-shadow: none;
+      background-color: #128273;
     }
 
-    /* Decorative Images */
+    /* DECORATIVE IMAGES */
     .decorative-img {
       position: absolute;
       top: 80%;
@@ -168,18 +166,18 @@
       right: 50px;
     }
     .decorative-img.in-view {
-      transform: translateY(-50%) scale(1.1);
+      transform: translateY(-50%) scale(1.05);
     }
     .decorative-img:hover {
       animation: pop 0.6s infinite alternate, pulseGlow 2s infinite ease-in-out;
     }
     @keyframes pop {
-      0%   { transform: translateY(-50%) scale(1.1); }
-      100% { transform: translateY(-50%) scale(1.15);}
+      0%   { transform: translateY(-50%) scale(1.05); }
+      100% { transform: translateY(-50%) scale(1.08);}
     }
     @keyframes pulseGlow {
       0% { box-shadow: 0 0 0px #1abc9c; }
-      50% { box-shadow: 0 0 20px #1abc9c; }
+      50% { box-shadow: 0 0 15px #1abc9c; }
       100% { box-shadow: 0 0 0px #1abc9c; }
     }
 
@@ -209,10 +207,9 @@
       color: #fff;
       cursor: pointer;
       margin-right: 3rem;
-      /* Removed spin animation for a more professional, static logo */
     }
 
-    /* Desktop Navigation Links */
+    /* DESKTOP NAV LINKS */
     .nav-links {
       display: flex;
       gap: 2rem;
@@ -225,7 +222,7 @@
       font-family: "Oswald", sans-serif;
       font-weight: 600;
       font-size: 1.3rem;
-      transition: color 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
+      transition: color 0.3s ease, transform 0.3s ease;
       position: relative;
     }
     .nav-links a::after {
@@ -233,7 +230,7 @@
       display: block;
       width: 0;
       height: 2px;
-      background: #1abc9c;
+      background: #14A085;
       transition: width 0.3s;
       position: absolute;
       bottom: -5px;
@@ -243,12 +240,11 @@
       width: 100%;
     }
     .nav-links a:hover {
-      color: #1abc9c;
-      transform: translateY(-3px);
-      text-shadow: 0 0 10px #1abc9c;
+      color: #14A085;
+      transform: translateY(-2px);
     }
 
-    /* HAMBURGER MENU STYLES */
+    /* HAMBURGER MENU (MOBILE) */
     .hamburger {
       display: none;
       flex-direction: column;
@@ -268,22 +264,24 @@
       transition: all 0.3s ease;
     }
 
-    /* Mobile Navigation Links */
+    /* SLIDE-IN MOBILE NAV */
     .mobile-nav {
-      display: none;
-      flex-direction: column;
-      gap: 1.5rem;
-      background: rgba(0, 0, 0, 0.95);
-      position: absolute;
-      top: 70px; 
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 600px;
-      padding: 1.5rem 2rem;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.97);
       z-index: 1000;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 3rem 2rem;
+      transition: right 0.4s ease-in-out;
+    }
+    .mobile-nav.show {
+      right: 0;
     }
     .mobile-nav a {
       color: #fff;
@@ -294,41 +292,11 @@
       transition: color 0.3s ease, transform 0.3s ease;
       position: relative;
     }
-    .mobile-nav a::after {
-      content: "";
-      display: block;
-      width: 0;
-      height: 2px;
-      background: #1abc9c;
-      transition: width 0.3s;
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-    }
-    .mobile-nav a:hover::after {
-      width: 100%;
-    }
     .mobile-nav a:hover {
-      color: #1abc9c;
-      transform: translateX(10px);
-      text-shadow: 0 0 10px #1abc9c;
+      color: #14A085;
+      transform: translateX(5px);
     }
 
-    /* TRANSITION FOR MOBILE NAV */
-    .mobile-nav.show {
-      display: flex;
-      animation: fadeIn 0.4s ease-in-out forwards;
-    }
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translate(-50%, -10px);
-      }
-      to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
-    }
     .hamburger.active div:nth-child(1) {
       transform: rotate(45deg) translate(5px, 5px);
     }
@@ -337,9 +305,6 @@
     }
     .hamburger.active div:nth-child(3) {
       transform: rotate(-45deg) translate(6px, -6px);
-    }
-    .mobile-nav.show ~ .fullpage-container section .decorative-img {
-      display: none !important;
     }
 
     /* ROADMAP ANIMATION */
@@ -353,7 +318,7 @@
       transform: translateY(0);
     }
 
-    /* Style the Solid Proof button in Roadmap */
+    /* SOLID PROOF BUTTON */
     .solid-proof-btn {
       display: inline-block;
       margin-top: 20px;
@@ -369,7 +334,7 @@
     }
     .solid-proof-btn:hover {
       background-color: #2980b9;
-      transform: translateY(-3px);
+      transform: translateY(-2px);
     }
 
     /* TIMELINE STYLES */
@@ -476,7 +441,7 @@
       margin-right: auto;
     }
 
-    /* HEADINGS FOR TOKENOMICS & ABOUT US */
+    /* TOKENOMICS & ABOUT US HEADINGS */
     #tokenomics h2,
     #about h2 {
       font-weight: 800;
@@ -545,9 +510,6 @@
       .overlay {
         padding: 40px;
       }
-      .custom-section {
-        padding: 40px;
-      }
       footer {
         font-size: 1.2rem;
       }
@@ -564,9 +526,6 @@
     @media (max-width: 390px) {
       .logo {
         font-size: 1.8rem;
-      }
-      .custom-section {
-        padding: 30px;
       }
       footer {
         font-size: 1rem;
@@ -591,7 +550,7 @@
         </li>
       </ul>
 
-      <!-- Hamburger Menu Icon (hidden on desktop, shown on mobile) -->
+      <!-- Hamburger Menu Icon (shown on mobile) -->
       <div class="hamburger" id="hamburger" aria-label="Toggle navigation">
         <div></div>
         <div></div>
@@ -599,7 +558,7 @@
       </div>
     </div>
 
-    <!-- Mobile Navigation Links -->
+    <!-- Slide-in Mobile Navigation Links -->
     <ul class="mobile-nav" id="mobile-nav">
       <li><a href="#tokenomics" onclick="toggleMobileNav()">Tokenomics</a></li>
       <li><a href="#about" onclick="toggleMobileNav()">About</a></li>
@@ -674,7 +633,7 @@
             <div class="accordion-content">
               <img src="11.png" alt="Step 1 Illustration" class="step-img" />
               <p>
-                Download the Phantom wallet from the official website or app store. 
+                Download the Phantom wallet from the official website or app store.
                 Create your wallet and fund it with SOL.
               </p>
             </div>
@@ -790,7 +749,7 @@
 
     hamburger.addEventListener("click", toggleMobileNav);
 
-    // Close mobile nav when clicking outside
+    // Close mobile nav if clicking outside
     window.addEventListener("click", function (event) {
       if (!hamburger.contains(event.target) && !mobileNav.contains(event.target)) {
         if (mobileNav.classList.contains("show")) {
@@ -815,7 +774,7 @@
     dynamicText[currentIndex].classList.add("active");
     setInterval(showNextWord, intervalTime);
 
-    // Animate Decorative Images on Scroll using Intersection Observer
+    // Animate Decorative Images on Scroll (Intersection Observer)
     const decorativeImages = document.querySelectorAll(".decorative-img");
     const observerOptions = { threshold: 0.3 };
     const observer = new IntersectionObserver((entries) => {
