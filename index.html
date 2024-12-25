@@ -27,18 +27,20 @@
       font-size: 1.1rem; /* Increase base font size for improved readability */
     }
 
-    /* Make paragraphs slightly larger & more spaced-out */
     p {
       font-size: 1.2rem;
       line-height: 1.8;
     }
 
-    /* FULLPAGE CONTAINER WITH SCROLL SNAP */
+    /* 
+      REMOVED the forced scroll-snap approach to allow normal scrolling.
+      Now we just have a normal container.
+    */
     .fullpage-container {
-      height: 100vh;
+      /* height: 100vh; */
       width: 100vw;
-      scroll-snap-type: y mandatory;
-      overflow-y: scroll;
+      /* scroll-snap-type: y mandatory;  <-- REMOVED */
+      /* overflow-y: scroll; <-- We can simply rely on the browser's default scrolling */
       scroll-behavior: smooth;
       position: relative;
     }
@@ -47,21 +49,25 @@
     section {
       min-height: 100vh;
       width: 100vw;
-      scroll-snap-align: start;
+      /* scroll-snap-align: start;  <-- REMOVED */
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       background-size: cover;
       background-position: center;
-      background-attachment: fixed; /* Will be overridden in smaller screens */
+      /*
+        background-attachment: fixed; 
+        Using fixed attachments on mobile can cause janky behavior.
+        Let’s default to "scroll" or remove the property entirely.
+      */
+      background-attachment: scroll;
       padding: 20px;
-      overflow: hidden; /* Keep absolutely positioned images contained */
-      opacity: 0;       /* We'll fade this in with Intersection Observer */
+      overflow: hidden; 
+      opacity: 0;       
       transform: translateY(20px);
       transition: opacity 0.8s ease, transform 0.8s ease; /* for fade-in */
     }
-    /* We'll add a 'visible' class in JavaScript for the fade-in effect. */
     section.visible {
       opacity: 1;
       transform: translateY(0);
@@ -83,13 +89,12 @@
         background-color 0.3s ease;
     }
 
-    /* HOVER FEEDBACK FOR OVERLAYS */
     .overlay:hover {
       transform: scale(1.03);
       box-shadow: 0 0 15px rgba(26, 188, 156, 0.4);
     }
 
-    /* FADE-IN ANIMATION (for About Us or anywhere else) */
+    /* FADE-IN ANIMATION */
     .fade-in {
       opacity: 0;
       transform: translateY(40px);
@@ -147,7 +152,6 @@
       border-radius: 5px;
       transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
     }
-    /* Glow effect on hover */
     .buttons a:hover {
       background-color: #16a085;
       transform: translateY(-3px);
@@ -169,8 +173,8 @@
       object-fit: contain;
       z-index: 1;
       transition: transform 0.6s ease, opacity 0.6s ease;
-      pointer-events: none; /* So it won't block clicks */
-      opacity: 0.8;        /* slightly see-through */
+      pointer-events: none;
+      opacity: 0.8;
     }
     .decorative-img.left {
       left: 50px;
@@ -178,11 +182,9 @@
     .decorative-img.right {
       right: 50px;
     }
-    /* Bump final scale to 1.1 to minimize overlap */
     .decorative-img.in-view {
       transform: translateY(-50%) scale(1.1);
     }
-    /* Add a fun bounce (pop) effect on hover + slight glow pulse */
     .decorative-img:hover {
       animation: pop 0.6s infinite alternate, pulseGlow 2s infinite ease-in-out;
     }
@@ -201,7 +203,6 @@
       position: fixed;
       top: 0;
       width: 100%;
-      /* NICE GRADIENT + slight transparency */
       background: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(26, 188, 156, 0.3));
       padding: 1rem 2rem;
       z-index: 1001;
@@ -209,20 +210,15 @@
       transition: background-color 0.4s ease;
     }
     nav:hover {
-      /* Slight glow effect when hovering near nav */
       box-shadow: 0 0 10px #1abc9c;
     }
     .nav-container {
       max-width: 1200px;
       margin: 0 auto;
       display: flex;
-      /* 
-         Center the entire nav row, including 
-         the logo & nav links/hamburger 
-      */
       justify-content: center; 
       align-items: center;
-      position: relative; /* we can position child elements inside if needed */
+      position: relative;
     }
     .logo {
       font-family: "Pacifico", cursive;
@@ -230,10 +226,9 @@
       font-weight: 400;
       color: #fff;
       cursor: pointer;
-      margin-right: 3rem; /* spacing from the nav links */
+      margin-right: 3rem;
       transition: transform 0.3s;
     }
-    /* Spinning logo on hover for fun */
     .logo:hover {
       animation: spin 1.2s linear infinite;
     }
@@ -280,7 +275,7 @@
 
     /* HAMBURGER MENU STYLES */
     .hamburger {
-      display: none; /* shown on mobile with a media query */
+      display: none;
       flex-direction: column;
       cursor: pointer;
       width: 35px;
@@ -288,7 +283,7 @@
       justify-content: space-between;
       z-index: 1002;
       position: absolute;
-      right: 20px; /* place it on the right side, but can be changed */
+      right: 20px;
     }
     .hamburger div {
       width: 100%;
@@ -305,14 +300,14 @@
       gap: 1.5rem;
       background: rgba(0, 0, 0, 0.95);
       position: absolute;
-      top: 70px; /* Height of nav */
+      top: 70px; 
       left: 50%;
-      transform: translateX(-50%); /* center horizontally */
+      transform: translateX(-50%);
       width: 90%;
       max-width: 600px;
       padding: 1.5rem 2rem;
       z-index: 1000;
-      text-align: center; /* center the nav items */
+      text-align: center;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
     .mobile-nav a {
@@ -350,7 +345,7 @@
       justify-content: center;
       align-items: center;
       padding: 60px;
-      background-color: rgba(52, 152, 219, 0.8); /* Light blue with transparency */
+      background-color: rgba(52, 152, 219, 0.8);
       color: #fff;
       font-family: "Montserrat", sans-serif;
       font-weight: 600;
@@ -397,11 +392,6 @@
       background-image: url("5.jpg");
     }
 
-    /* SMOOTH SCROLLING */
-    html {
-      scroll-behavior: smooth;
-    }
-
     /* TRANSITION FOR MOBILE NAV */
     .mobile-nav.show {
       display: flex;
@@ -417,8 +407,6 @@
         transform: translate(-50%, 0);
       }
     }
-
-    /* HAMBURGER ACTIVE STATE */
     .hamburger.active div:nth-child(1) {
       transform: rotate(45deg) translate(5px, 5px);
     }
@@ -428,13 +416,11 @@
     .hamburger.active div:nth-child(3) {
       transform: rotate(-45deg) translate(6px, -6px);
     }
-
-    /* WHEN HAMBURGER NAV IS ACTIVE, HIDE ALL DECORATIVE IMAGES */
     .mobile-nav.show ~ .fullpage-container section .decorative-img {
       display: none !important;
     }
 
-    /* ANIMATION FOR ROADMAP SECTION */
+    /* ROADMAP ANIMATION */
     .roadmap-content, .solid-proof-btn {
       opacity: 0;
       transform: translateY(40px);
@@ -464,7 +450,7 @@
       transform: translateY(-3px);
     }
 
-    /* MORE INTERACTIVE ROADMAP: TIMELINE STYLE */
+    /* TIMELINE STYLES */
     .timeline {
       position: relative;
       margin: 40px auto;
@@ -510,7 +496,7 @@
       border: 2px solid #fff;
     }
 
-    /* ACCORDION STYLING FOR "HOW TO BUY" SECTION */
+    /* ACCORDION STYLES */
     .accordion {
       margin-top: 20px;
       text-align: left;
@@ -547,7 +533,7 @@
       line-height: 1.6;
     }
     .accordion-item.active .accordion-content {
-      height: auto; /* allows the content to expand to its full height */
+      height: auto; 
       padding-bottom: 15px;
     }
     .accordion-header span.toggle-icon {
@@ -568,23 +554,22 @@
       margin-right: auto;
     }
 
-    /* STYLE HEADINGS FOR TOKENOMICS & ABOUT US */
+    /* HEADINGS FOR TOKENOMICS & ABOUT US */
     #tokenomics h2,
     #about h2 {
-      font-weight: 800;     /* Increase the font weight */
-      font-size: 2.4rem;    /* Adjust heading size */
-      color: #1abc9c;       /* Choose your color */
-      letter-spacing: 1px;  /* Optional - spacing effect */
-      text-transform: uppercase; /* Optional - make it uppercase */
-      margin-bottom: 1rem;  /* Space below heading */
+      font-weight: 800;
+      font-size: 2.4rem;
+      color: #1abc9c;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
     }
 
     /* MEDIA QUERIES */
     @media (max-width: 1200px) {
       .hamburger {
-        display: flex; /* Show hamburger menu on screens <=1200px */
+        display: flex; 
       }
-      /* Hide desktop links */
       .nav-links {
         display: none; 
       }
@@ -598,16 +583,7 @@
       .decorative-img.right {
         right: 30px;
       }
-      /* Switch background-attachment to scroll at smaller screens */
-      section {
-        background-attachment: scroll;
-      }
-      /* Hide the decorative images on smaller tablets to prevent overlap */
-      .decorative-img {
-        display: none; 
-      }
     }
-
     @media (max-width: 1024px) {
       .logo {
         font-size: 2rem;
@@ -626,7 +602,15 @@
         height: 200px;
       }
     }
-
+    /*
+      Hide or significantly shrink decorative images on very small screens 
+      so they don't overlap the content.
+    */
+    @media (max-width: 768px) {
+      .decorative-img {
+        display: none; /* ensures the roadmap button is not hidden by images */
+      }
+    }
     @media (max-width: 390px) {
       .logo {
         font-size: 1.8rem;
@@ -644,7 +628,7 @@
   <!-- NAVIGATION BAR -->
   <nav>
     <div class="nav-container">
-      <div class="logo">StudPepe</div>
+      <div class="logo" onclick="window.location.href='#home'">StudPepe</div>
       
       <!-- Desktop Nav Links -->
       <ul class="nav-links">
@@ -665,7 +649,7 @@
       </div>
     </div>
 
-    <!-- Mobile Navigation Links (centered) -->
+    <!-- Mobile Navigation Links -->
     <ul class="mobile-nav" id="mobile-nav">
       <li><a href="#tokenomics" onclick="toggleMobileNav()">Tokenomics</a></li>
       <li><a href="#about" onclick="toggleMobileNav()">About</a></li>
@@ -679,7 +663,7 @@
   <div class="fullpage-container">
     <!-- HOME SECTION -->
     <section id="home">
-      <!-- Decorative Image (Left only for #home) -->
+      <!-- Decorative Image (Left) -->
       <img
         src="8.png"
         alt="Decorative Left"
@@ -691,9 +675,7 @@
           <span class="active">Here</span>
           <span>Secure</span>
           <span>tax free</span>
-          <span></span>
-     
-          <span>decentralized </span>
+          <span>decentralized</span>
           <span>fun</span>
           <span>easy to trade</span>
           <span>yours</span>
@@ -707,7 +689,7 @@
 
     <!-- TOKENOMICS SECTION -->
     <section id="tokenomics">
-      <!-- Decorative Image (Right only for #tokenomics) -->
+      <!-- Decorative Image (Right) -->
       <img
         src="7.png"
         alt="Decorative Right"
@@ -731,7 +713,7 @@
       />
       <div class="overlay">
         <h2>How to Buy</h2>
-        <!-- ACCORDION FOR STEPS -->
+        <!-- ACCORDION -->
         <div class="accordion" id="accordion">
           <!-- STEP 1 -->
           <div class="accordion-item">
@@ -793,7 +775,7 @@
           <ul class="timeline">
             <li class="timeline-item">
               <h3>Q1 December 2024</h3>
-              <p>Launch of StudPepe, listing on dexscreenerand pump.fun for initial community building</p>
+              <p>Launch of StudPepe, listing on dexscreener and pump.fun for initial community building</p>
             </li>
             <li class="timeline-item">
               <h3>Q2 Jan 2025</h3>
@@ -801,11 +783,11 @@
             </li>
             <li class="timeline-item">
               <h3>Q3 March 2024</h3>
-              <p>listing on CMC, Coinabse, Crypto.com</p>
+              <p>Listing on CMC, Coinbase, Crypto.com</p>
             </li>
             <li class="timeline-item">
               <h3>Q4 July 2024</h3>
-              <p>launch of StudPepe merchandise, and continuous community engagement</p>
+              <p>Launch of StudPepe merchandise, and continuous community engagement</p>
             </li>
           </ul>
         </div>
@@ -819,7 +801,7 @@
       </div>
     </section>
 
-    <!-- ABOUT US SECTION (with fade-in class) -->
+    <!-- ABOUT US SECTION -->
     <section id="about">
       <!-- Decorative Image (Left) -->
       <img
@@ -827,7 +809,6 @@
         alt="Decorative Left"
         class="decorative-img left"
       />
-      <!-- Added the 'fade-in' class to the overlay for the interactive effect -->
       <div class="overlay fade-in">
         <h2>About Us</h2>
         <p>
@@ -896,6 +877,7 @@
         }
       });
     }, observerOptions);
+
     decorativeImages.forEach((img) => observer.observe(img));
 
     // Animate Roadmap content on scroll
@@ -913,10 +895,11 @@
         }
       });
     }, roadmapObserverOptions);
+
     roadmapObserver.observe(roadmapContent);
     roadmapObserver.observe(solidProofBtn);
 
-    // ACCORDION FUNCTIONALITY FOR "HOW TO BUY" SECTION
+    // ACCORDION FUNCTIONALITY
     const accordion = document.getElementById("accordion");
     const accordionItems = accordion.querySelectorAll(".accordion-item");
     accordionItems.forEach((item) => {
@@ -943,9 +926,10 @@
         }
       });
     }, { threshold: 0.2 });
+
     aboutObserver.observe(aboutOverlay);
 
-    // FADE-IN SECTIONS: We'll observe each section for fade-in
+    // FADE-IN SECTIONS
     const sections = document.querySelectorAll("section");
     const secObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -954,6 +938,7 @@
         }
       });
     }, { threshold: 0.15 });
+
     sections.forEach((sec) => secObserver.observe(sec));
   </script>
 </body>
