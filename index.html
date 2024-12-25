@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>StudPepe - The Ultimate Memecoin</title>
+  <link rel="icon" type="image/png" href="logo.png" />
 
   <!-- Google Fonts -->
   <link
@@ -27,47 +28,39 @@
       font-size: 1.1rem; /* Increase base font size for improved readability */
     }
 
-    /* Make paragraphs slightly larger & more spaced-out */
     p {
       font-size: 1.2rem;
       line-height: 1.8;
     }
 
-    /* FULLPAGE CONTAINER WITH SCROLL SNAP */
+    /* FULLPAGE CONTAINER & SECTIONS */
     .fullpage-container {
-      height: 100vh;
       width: 100vw;
-      scroll-snap-type: y mandatory;
-      overflow-y: scroll;
       scroll-behavior: smooth;
       position: relative;
     }
-
-    /* SECTION STYLES */
     section {
       min-height: 100vh;
       width: 100vw;
-      scroll-snap-align: start;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       background-size: cover;
       background-position: center;
-      background-attachment: fixed; /* Will be overridden in smaller screens */
+      background-attachment: scroll;
       padding: 20px;
-      overflow: hidden; /* Keep absolutely positioned images contained */
-      opacity: 0;       /* We'll fade this in with Intersection Observer */
+      overflow: hidden; 
+      opacity: 0;       
       transform: translateY(20px);
       transition: opacity 0.8s ease, transform 0.8s ease; /* for fade-in */
     }
-    /* We'll add a 'visible' class in JavaScript for the fade-in effect. */
     section.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* Overlay for better text readability */
+    /* OVERLAY FOR TEXT */
     .overlay {
       background: rgba(0, 0, 0, 0.7);
       padding: 60px;
@@ -82,14 +75,12 @@
         box-shadow 0.3s ease, 
         background-color 0.3s ease;
     }
-
-    /* HOVER FEEDBACK FOR OVERLAYS */
     .overlay:hover {
-      transform: scale(1.03);
-      box-shadow: 0 0 15px rgba(26, 188, 156, 0.4);
+      transform: scale(1.02);
+      box-shadow: 0 0 15px rgba(20, 160, 133, 0.3); /* Subtle glow */
     }
 
-    /* FADE-IN ANIMATION (for About Us or anywhere else) */
+    /* FADE-IN ANIMATION */
     .fade-in {
       opacity: 0;
       transform: translateY(40px);
@@ -100,7 +91,7 @@
       transform: translateY(0);
     }
 
-    /* Dynamic Text Styling */
+    /* DYNAMIC TEXT STYLING */
     .dynamic-text {
       font-family: "Oswald", sans-serif;
       font-size: 3rem;
@@ -128,7 +119,7 @@
       transform: translateY(20px);
     }
 
-    /* Buttons Styling */
+    /* BUTTONS STYLING (Subtle Hover) */
     .buttons {
       margin-top: 30px;
       display: flex;
@@ -145,21 +136,18 @@
       font-size: 1.2rem;
       font-weight: 600;
       border-radius: 5px;
-      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
-    /* Glow effect on hover */
     .buttons a:hover {
-      background-color: #16a085;
-      transform: translateY(-3px);
-      box-shadow: 0 0 10px #1abc9c, 0 0 20px #1abc9c;
+      background-color: #14A085; /* Subtle hover color */
+      transform: translateY(-2px);
     }
     .buttons a:active {
       transform: translateY(0);
-      background-color: #149174;
-      box-shadow: none;
+      background-color: #128273;
     }
 
-    /* Decorative Images */
+    /* DECORATIVE IMAGES */
     .decorative-img {
       position: absolute;
       top: 80%;
@@ -169,8 +157,8 @@
       object-fit: contain;
       z-index: 1;
       transition: transform 0.6s ease, opacity 0.6s ease;
-      pointer-events: none; /* So it won't block clicks */
-      opacity: 0.8;        /* slightly see-through */
+      pointer-events: none;
+      opacity: 0.8;
     }
     .decorative-img.left {
       left: 50px;
@@ -178,21 +166,19 @@
     .decorative-img.right {
       right: 50px;
     }
-    /* Bump final scale to 1.1 to minimize overlap */
     .decorative-img.in-view {
-      transform: translateY(-50%) scale(1.1);
+      transform: translateY(-50%) scale(1.05);
     }
-    /* Add a fun bounce (pop) effect on hover + slight glow pulse */
     .decorative-img:hover {
       animation: pop 0.6s infinite alternate, pulseGlow 2s infinite ease-in-out;
     }
     @keyframes pop {
-      0%   { transform: translateY(-50%) scale(1.1); }
-      100% { transform: translateY(-50%) scale(1.15);}
+      0%   { transform: translateY(-50%) scale(1.05); }
+      100% { transform: translateY(-50%) scale(1.08);}
     }
     @keyframes pulseGlow {
       0% { box-shadow: 0 0 0px #1abc9c; }
-      50% { box-shadow: 0 0 20px #1abc9c; }
+      50% { box-shadow: 0 0 15px #1abc9c; }
       100% { box-shadow: 0 0 0px #1abc9c; }
     }
 
@@ -201,28 +187,19 @@
       position: fixed;
       top: 0;
       width: 100%;
-      /* NICE GRADIENT + slight transparency */
       background: linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(26, 188, 156, 0.3));
       padding: 1rem 2rem;
       z-index: 1001;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       transition: background-color 0.4s ease;
     }
-    nav:hover {
-      /* Slight glow effect when hovering near nav */
-      box-shadow: 0 0 10px #1abc9c;
-    }
     .nav-container {
       max-width: 1200px;
       margin: 0 auto;
       display: flex;
-      /* 
-         Center the entire nav row, including 
-         the logo & nav links/hamburger 
-      */
       justify-content: center; 
       align-items: center;
-      position: relative; /* we can position child elements inside if needed */
+      position: relative;
     }
     .logo {
       font-family: "Pacifico", cursive;
@@ -230,19 +207,10 @@
       font-weight: 400;
       color: #fff;
       cursor: pointer;
-      margin-right: 3rem; /* spacing from the nav links */
-      transition: transform 0.3s;
-    }
-    /* Spinning logo on hover for fun */
-    .logo:hover {
-      animation: spin 1.2s linear infinite;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0); }
-      100% { transform: rotate(360deg); }
+      margin-right: 3rem;
     }
 
-    /* Desktop Navigation Links */
+    /* DESKTOP NAV LINKS */
     .nav-links {
       display: flex;
       gap: 2rem;
@@ -255,7 +223,7 @@
       font-family: "Oswald", sans-serif;
       font-weight: 600;
       font-size: 1.3rem;
-      transition: color 0.3s ease, transform 0.3s ease, text-shadow 0.3s ease;
+      transition: color 0.3s ease, transform 0.3s ease;
       position: relative;
     }
     .nav-links a::after {
@@ -263,7 +231,7 @@
       display: block;
       width: 0;
       height: 2px;
-      background: #1abc9c;
+      background: #14A085;
       transition: width 0.3s;
       position: absolute;
       bottom: -5px;
@@ -273,14 +241,13 @@
       width: 100%;
     }
     .nav-links a:hover {
-      color: #1abc9c;
-      transform: translateY(-3px);
-      text-shadow: 0 0 10px #1abc9c;
+      color: #14A085;
+      transform: translateY(-2px);
     }
 
-    /* HAMBURGER MENU STYLES */
+    /* HAMBURGER MENU (MOBILE) */
     .hamburger {
-      display: none; /* shown on mobile with a media query */
+      display: none;
       flex-direction: column;
       cursor: pointer;
       width: 35px;
@@ -288,7 +255,7 @@
       justify-content: space-between;
       z-index: 1002;
       position: absolute;
-      right: 20px; /* place it on the right side, but can be changed */
+      right: 20px;
     }
     .hamburger div {
       width: 100%;
@@ -298,22 +265,25 @@
       transition: all 0.3s ease;
     }
 
-    /* Mobile Navigation Links */
+    /* SLIDE-IN MOBILE NAV */
     .mobile-nav {
-      display: none;
-      flex-direction: column;
-      gap: 1.5rem;
-      background: rgba(0, 0, 0, 0.95);
-      position: absolute;
-      top: 70px; /* Height of nav */
-      left: 50%;
-      transform: translateX(-50%); /* center horizontally */
-      width: 90%;
-      max-width: 600px;
-      padding: 1.5rem 2rem;
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.97);
       z-index: 1000;
-      text-align: center; /* center the nav items */
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 3rem 2rem;
+      transition: right 0.4s ease-in-out;
+      opacity: 0.7;
+    }
+    .mobile-nav.show {
+      right: 0;
     }
     .mobile-nav a {
       color: #fff;
@@ -324,101 +294,11 @@
       transition: color 0.3s ease, transform 0.3s ease;
       position: relative;
     }
-    .mobile-nav a::after {
-      content: "";
-      display: block;
-      width: 0;
-      height: 2px;
-      background: #1abc9c;
-      transition: width 0.3s;
-      position: absolute;
-      bottom: -5px;
-      left: 0;
-    }
-    .mobile-nav a:hover::after {
-      width: 100%;
-    }
     .mobile-nav a:hover {
-      color: #1abc9c;
-      transform: translateX(10px);
-      text-shadow: 0 0 10px #1abc9c;
+      color: #14A085;
+      transform: translateX(5px);
     }
 
-    /* CUSTOM SECTION STYLING */
-    .custom-section {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 60px;
-      background-color: rgba(52, 152, 219, 0.8); /* Light blue with transparency */
-      color: #fff;
-      font-family: "Montserrat", sans-serif;
-      font-weight: 600;
-      border-radius: 8px;
-      margin: 20px;
-      text-align: center;
-      max-width: 1000px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .custom-section:hover {
-      transform: scale(1.02);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    }
-
-    /* FOOTER */
-    footer {
-      flex-shrink: 0;
-      display: block;
-      text-align: center;
-      padding: 30px;
-      background: #2c3e50;
-      font-size: 1.5rem;
-      color: #bdc3c7;
-      font-family: "Montserrat", sans-serif;
-      font-weight: 500;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    /* BACKGROUND IMAGES FOR SECTIONS */
-    #home {
-      background-image: url("1.jpg");
-    }
-    #tokenomics {
-      background-image: url("2.jpg");
-    }
-    #about {
-      background-image: url("3.jpg");
-    }
-    #roadmap {
-      background-image: url("4.jpg");
-    }
-    #how-to-buy {
-      background-image: url("5.jpg");
-    }
-
-    /* SMOOTH SCROLLING */
-    html {
-      scroll-behavior: smooth;
-    }
-
-    /* TRANSITION FOR MOBILE NAV */
-    .mobile-nav.show {
-      display: flex;
-      animation: fadeIn 0.4s ease-in-out forwards;
-    }
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: translate(-50%, -10px);
-      }
-      to {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
-    }
-
-    /* HAMBURGER ACTIVE STATE */
     .hamburger.active div:nth-child(1) {
       transform: rotate(45deg) translate(5px, 5px);
     }
@@ -429,12 +309,7 @@
       transform: rotate(-45deg) translate(6px, -6px);
     }
 
-    /* WHEN HAMBURGER NAV IS ACTIVE, HIDE ALL DECORATIVE IMAGES */
-    .mobile-nav.show ~ .fullpage-container section .decorative-img {
-      display: none !important;
-    }
-
-    /* ANIMATION FOR ROADMAP SECTION */
+    /* ROADMAP ANIMATION */
     .roadmap-content, .solid-proof-btn {
       opacity: 0;
       transform: translateY(40px);
@@ -445,7 +320,7 @@
       transform: translateY(0);
     }
 
-    /* Style the Solid Proof button in Roadmap */
+    /* SOLID PROOF BUTTON */
     .solid-proof-btn {
       display: inline-block;
       margin-top: 20px;
@@ -461,10 +336,10 @@
     }
     .solid-proof-btn:hover {
       background-color: #2980b9;
-      transform: translateY(-3px);
+      transform: translateY(-2px);
     }
 
-    /* MORE INTERACTIVE ROADMAP: TIMELINE STYLE */
+    /* TIMELINE STYLES */
     .timeline {
       position: relative;
       margin: 40px auto;
@@ -510,7 +385,7 @@
       border: 2px solid #fff;
     }
 
-    /* ACCORDION STYLING FOR "HOW TO BUY" SECTION */
+    /* ACCORDION STYLES */
     .accordion {
       margin-top: 20px;
       text-align: left;
@@ -547,7 +422,7 @@
       line-height: 1.6;
     }
     .accordion-item.active .accordion-content {
-      height: auto; /* allows the content to expand to its full height */
+      height: auto; 
       padding-bottom: 15px;
     }
     .accordion-header span.toggle-icon {
@@ -568,23 +443,54 @@
       margin-right: auto;
     }
 
-    /* STYLE HEADINGS FOR TOKENOMICS & ABOUT US */
+    /* TOKENOMICS & ABOUT US HEADINGS */
     #tokenomics h2,
     #about h2 {
-      font-weight: 800;     /* Increase the font weight */
-      font-size: 2.4rem;    /* Adjust heading size */
-      color: #1abc9c;       /* Choose your color */
-      letter-spacing: 1px;  /* Optional - spacing effect */
-      text-transform: uppercase; /* Optional - make it uppercase */
-      margin-bottom: 1rem;  /* Space below heading */
+      font-weight: 800;
+      font-size: 2.4rem;
+      color: #1abc9c;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      flex-shrink: 0;
+      display: block;
+      text-align: center;
+      padding: 30px;
+      background: #2c3e50;
+      font-size: 1.5rem;
+      color: #bdc3c7;
+      font-family: "Montserrat", sans-serif;
+      font-weight: 500;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* BACKGROUND IMAGES FOR SECTIONS */
+    #home {
+      background-image: url("1.jpg");
+    }
+    #tokenomics {
+      background-image: url("2.jpg");
+    }
+    #about {
+      background-image: url("3.jpg");
+    }
+    #roadmap {
+      background-image: url("4.jpg");
+    }
+    #how-to-buy {
+      background-image: url("5.jpg");
     }
 
     /* MEDIA QUERIES */
     @media (max-width: 1200px) {
       .hamburger {
-        display: flex; /* Show hamburger menu on screens <=1200px */
+        display: flex; 
       }
-      /* Hide desktop links */
       .nav-links {
         display: none; 
       }
@@ -598,24 +504,12 @@
       .decorative-img.right {
         right: 30px;
       }
-      /* Switch background-attachment to scroll at smaller screens */
-      section {
-        background-attachment: scroll;
-      }
-      /* Hide the decorative images on smaller tablets to prevent overlap */
-      .decorative-img {
-        display: none; 
-      }
     }
-
     @media (max-width: 1024px) {
       .logo {
         font-size: 2rem;
       }
       .overlay {
-        padding: 40px;
-      }
-      .custom-section {
         padding: 40px;
       }
       footer {
@@ -626,13 +520,14 @@
         height: 200px;
       }
     }
-
+    @media (max-width: 768px) {
+      .decorative-img {
+        display: none;
+      }
+    }
     @media (max-width: 390px) {
       .logo {
         font-size: 1.8rem;
-      }
-      .custom-section {
-        padding: 30px;
       }
       footer {
         font-size: 1rem;
@@ -644,20 +539,21 @@
   <!-- NAVIGATION BAR -->
   <nav>
     <div class="nav-container">
-      <div class="logo">StudPepe</div>
+      <div class="logo" onclick="window.location.href='#home'">StudPepe</div>
       
       <!-- Desktop Nav Links -->
       <ul class="nav-links">
         <li><a href="#tokenomics">Tokenomics</a></li>
-        <li><a href="#about">About</a></li>
+        <li>
+          <a href="studpepe.pdf" target="_blank">Solid Proof audit</a>
+        </li>
+       
         <li><a href="#roadmap">Roadmap</a></li>
         <li><a href="#how-to-buy">How to Buy</a></li>
-        <li>
-          <a href="solidProof.pdf" target="_blank">Solid Proof</a>
-        </li>
+        <li><a href="#about">About</a></li>
       </ul>
 
-      <!-- Hamburger Menu Icon (hidden on desktop, shown on mobile) -->
+      <!-- Hamburger Menu Icon (shown on mobile) -->
       <div class="hamburger" id="hamburger" aria-label="Toggle navigation">
         <div></div>
         <div></div>
@@ -665,13 +561,14 @@
       </div>
     </div>
 
-    <!-- Mobile Navigation Links (centered) -->
+    <!-- Slide-in Mobile Navigation Links -->
     <ul class="mobile-nav" id="mobile-nav">
       <li><a href="#tokenomics" onclick="toggleMobileNav()">Tokenomics</a></li>
-      <li><a href="#about" onclick="toggleMobileNav()">About</a></li>
+      <li><a href="studpepe.pdf" target="_blank" onclick="toggleMobileNav()">Solid Proof audit</a></li>
+     
       <li><a href="#roadmap" onclick="toggleMobileNav()">Roadmap</a></li>
       <li><a href="#how-to-buy" onclick="toggleMobileNav()">How to Buy</a></li>
-      <li><a href="solidProof.pdf" target="_blank" onclick="toggleMobileNav()">Solid Proof</a></li>
+      <li><a href="#about" onclick="toggleMobileNav()">About</a></li>
     </ul>
   </nav>
 
@@ -679,21 +576,20 @@
   <div class="fullpage-container">
     <!-- HOME SECTION -->
     <section id="home">
-      <!-- Decorative Image (Left only for #home) -->
+      <!-- Decorative Image (Left) -->
       <img
         src="8.png"
         alt="Decorative Left"
         class="decorative-img left"
       />
       <div class="overlay">
-        <h2>Welcome to StudPepe<br><br>It is</h2>
+        <div class="logo" onclick="window.location.href='#home'">Welcome to Studpepe</div>
+    <br><br><h1>It is</h1>
         <div class="dynamic-text">
           <span class="active">Here</span>
           <span>Secure</span>
           <span>tax free</span>
-          <span></span>
-     
-          <span>decentralized </span>
+          <span>decentralized</span>
           <span>fun</span>
           <span>easy to trade</span>
           <span>yours</span>
@@ -707,7 +603,7 @@
 
     <!-- TOKENOMICS SECTION -->
     <section id="tokenomics">
-      <!-- Decorative Image (Right only for #tokenomics) -->
+      <!-- Decorative Image (Right) -->
       <img
         src="7.png"
         alt="Decorative Right"
@@ -720,18 +616,57 @@
         <p><strong>Tax:</strong> 0/0 (buy and sell)</p>
       </div>
     </section>
+ <!-- ROADMAP SECTION -->
+ <section id="roadmap">
+  <!-- Decorative Image (Right) -->
+  <img
+    src="9.png"
+    alt="Decorative Right"
+    class="decorative-img left"
+  />
+  <div class="overlay">
+    <div class="roadmap-content">
+      <h2>Our Roadmap</h2>
+      <ul class="timeline">
+        <li class="timeline-item">
+          <h3>Q1 December 2024</h3>
+          <p>Launch of StudPepe, listing on dexscreener and pump.fun for initial community building</p>
+        </li>
+        <li class="timeline-item">
+          <h3>Q2 Jan 2025</h3>
+          <p>Introduction of staking rewards through Solbank</p>
+        </li>
+        <li class="timeline-item">
+          <h3>Q3 March 2024</h3>
+          <p>Listing on CMC, Coinbase, Crypto.com</p>
+        </li>
+        <li class="timeline-item">
+          <h3>Q4 July 2024</h3>
+          <p>Launch of StudPepe merchandise, and continuous community engagement</p>
+        </li>
+      </ul>
+    </div>
+    <a
+      href="studpepe.pdf"
+      target="_blank"
+      class="solid-proof-btn"
+    >
+      View Solid Proof Audit
+    </a>
+  </div>
+</section>
 
     <!-- HOW TO BUY SECTION -->
     <section id="how-to-buy">
       <!-- Decorative Image (Left) -->
       <img
-        src="8.png"
+        src="7.png"
         alt="Decorative Left"
-        class="decorative-img left"
+        class="decorative-img right"
       />
       <div class="overlay">
         <h2>How to Buy</h2>
-        <!-- ACCORDION FOR STEPS -->
+        <!-- ACCORDION -->
         <div class="accordion" id="accordion">
           <!-- STEP 1 -->
           <div class="accordion-item">
@@ -742,7 +677,7 @@
             <div class="accordion-content">
               <img src="11.png" alt="Step 1 Illustration" class="step-img" />
               <p>
-                Download the Phantom wallet from the official website or app store. 
+                Download the Phantom wallet from the official website or app store.
                 Create your wallet and fund it with SOL.
               </p>
             </div>
@@ -779,47 +714,8 @@
       </div>
     </section>
 
-    <!-- ROADMAP SECTION -->
-    <section id="roadmap">
-      <!-- Decorative Image (Right) -->
-      <img
-        src="7.png"
-        alt="Decorative Right"
-        class="decorative-img right"
-      />
-      <div class="overlay">
-        <div class="roadmap-content">
-          <h2>Our Roadmap</h2>
-          <ul class="timeline">
-            <li class="timeline-item">
-              <h3>Q1 December 2024</h3>
-              <p>Launch of StudPepe, listing on dexscreenerand pump.fun for initial community building</p>
-            </li>
-            <li class="timeline-item">
-              <h3>Q2 Jan 2025</h3>
-              <p>Introduction of staking rewards through Solbank</p>
-            </li>
-            <li class="timeline-item">
-              <h3>Q3 March 2024</h3>
-              <p>listing on CMC, Coinabse, Crypto.com</p>
-            </li>
-            <li class="timeline-item">
-              <h3>Q4 July 2024</h3>
-              <p>launch of StudPepe merchandise, and continuous community engagement</p>
-            </li>
-          </ul>
-        </div>
-        <a
-          href="solidProof.pdf"
-          target="_blank"
-          class="solid-proof-btn"
-        >
-          View Solid Proof (PDF)
-        </a>
-      </div>
-    </section>
-
-    <!-- ABOUT US SECTION (with fade-in class) -->
+   
+    <!-- ABOUT US SECTION -->
     <section id="about">
       <!-- Decorative Image (Left) -->
       <img
@@ -827,7 +723,6 @@
         alt="Decorative Left"
         class="decorative-img left"
       />
-      <!-- Added the 'fade-in' class to the overlay for the interactive effect -->
       <div class="overlay fade-in">
         <h2>About Us</h2>
         <p>
@@ -859,7 +754,7 @@
 
     hamburger.addEventListener("click", toggleMobileNav);
 
-    // Close mobile nav when clicking outside
+    // Close mobile nav if clicking outside
     window.addEventListener("click", function (event) {
       if (!hamburger.contains(event.target) && !mobileNav.contains(event.target)) {
         if (mobileNav.classList.contains("show")) {
@@ -884,7 +779,7 @@
     dynamicText[currentIndex].classList.add("active");
     setInterval(showNextWord, intervalTime);
 
-    // Animate Decorative Images on Scroll using Intersection Observer
+    // Animate Decorative Images on Scroll (Intersection Observer)
     const decorativeImages = document.querySelectorAll(".decorative-img");
     const observerOptions = { threshold: 0.3 };
     const observer = new IntersectionObserver((entries) => {
@@ -896,6 +791,7 @@
         }
       });
     }, observerOptions);
+
     decorativeImages.forEach((img) => observer.observe(img));
 
     // Animate Roadmap content on scroll
@@ -913,10 +809,11 @@
         }
       });
     }, roadmapObserverOptions);
+
     roadmapObserver.observe(roadmapContent);
     roadmapObserver.observe(solidProofBtn);
 
-    // ACCORDION FUNCTIONALITY FOR "HOW TO BUY" SECTION
+    // ACCORDION FUNCTIONALITY
     const accordion = document.getElementById("accordion");
     const accordionItems = accordion.querySelectorAll(".accordion-item");
     accordionItems.forEach((item) => {
@@ -943,9 +840,10 @@
         }
       });
     }, { threshold: 0.2 });
+
     aboutObserver.observe(aboutOverlay);
 
-    // FADE-IN SECTIONS: We'll observe each section for fade-in
+    // FADE-IN SECTIONS
     const sections = document.querySelectorAll("section");
     const secObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -954,6 +852,7 @@
         }
       });
     }, { threshold: 0.15 });
+
     sections.forEach((sec) => secObserver.observe(sec));
   </script>
 </body>
