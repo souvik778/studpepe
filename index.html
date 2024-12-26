@@ -24,7 +24,7 @@
     body {
       font-family: "Roboto", sans-serif;
       color: #fff;
-      background-color: #0a0a0a; /* Slightly lighter than pure black */
+      background-color: #000;
       font-size: 1.1rem; /* Increase base font size for improved readability */
       overflow-x: hidden; /* Hide horizontal scrollbar if shapes move off-screen */
       position: relative; /* So we can stack the canvas behind content */
@@ -56,6 +56,9 @@
       min-height: 100vh;
       width: 100vw;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background-size: cover;
       background-position: center;
       background-attachment: scroll;
@@ -72,12 +75,13 @@
 
     /* OVERLAY FOR TEXT */
     .overlay {
-      background: rgba(30, 30, 30, 0.85); /* Changed container color */
+      background: rgba(0, 0, 0, 0.7);
       padding: 50px;
       border-radius: 8px;
       max-width: 700px;
       width: 90%;
-      text-align: inherit; /* Inherit alignment from additional classes */
+      text-align: center;
+      justify-content: center;
       position: relative;
       z-index: 2;
       transition: 
@@ -88,22 +92,6 @@
     .overlay:hover {
       transform: scale(1.02);
       box-shadow: 0 0 15px rgba(20, 160, 133, 0.3); /* Subtle glow */
-    }
-
-    /* Alignment Classes */
-    .align-center {
-      text-align: center;
-      margin: 0 auto;
-    }
-
-    .align-left {
-      text-align: left;
-      margin-left: 60%;
-    }
-
-    .align-right {
-      text-align: right;
-      margin-right: 60%;
     }
 
     /* FADE-IN ANIMATION */
@@ -179,8 +167,7 @@
       top: 60%;
       transform: translateY(-50%) scale(0.8);
       width: 600px;
-      max-width: 100%;
-      height: auto;
+      height: 500px;
       object-fit: contain;
       z-index: 1;
       transition: transform 0.6s ease, opacity 0.6s ease;
@@ -418,7 +405,7 @@
       text-align: left;
     }
     .accordion-item {
-      background-color: rgba(255, 255, 255, 0.05); /* Slightly lighter for contrast */
+      background-color: rgba(0, 0, 0, 0.5);
       margin-bottom: 10px;
       border-radius: 5px;
       overflow: hidden;
@@ -463,7 +450,6 @@
     .step-img {
       width: 100%;
       max-width: 250px;
-      height: auto; /* Ensure images scale correctly */
       margin-bottom: 1rem;
       border-radius: 8px;
       display: block;
@@ -524,7 +510,7 @@
       }
       .decorative-img {
         width: 250px; 
-        height: auto;
+        height: 250px;
       }
       .decorative-img.left {
         left: 30px;
@@ -545,29 +531,12 @@
       }
       .decorative-img {
         width: 200px;
-        height: auto;
-      }
-      .timeline::before {
-        left: 20px;
-      }
-      .timeline-item {
-        margin-left: 50px;
-      }
-      .timeline-item::before {
-        left: -30px;
+        height: 200px;
       }
     }
     @media (max-width: 768px) {
       .decorative-img {
         display: none;
-      }
-      .buttons {
-        flex-direction: column;
-        gap: 15px;
-      }
-      .solid-proof-btn {
-        width: 100%;
-        text-align: center;
       }
     }
     @media (max-width: 390px) {
@@ -576,19 +545,6 @@
       }
       footer {
         font-size: 1rem;
-      }
-      .overlay {
-        padding: 30px;
-      }
-      .dynamic-text {
-        font-size: 2rem;
-        height: 2.5rem;
-      }
-      .nav-links a {
-        font-size: 1rem;
-      }
-      .mobile-nav a {
-        font-size: 1.3rem;
       }
     }
   </style>
@@ -639,8 +595,8 @@
         alt="Decorative Left"
         class="decorative-img left"
       />
-      <div class="overlay align-center">
-        <div class="logo" style="text-align: center">&nbsp;&nbsp; StudPepe is </div>
+      <div class="overlay">
+        <div class="logo" styles="text-align: center">&nbsp;&nbsp; Studpepe is </div>
       
         <div class="dynamic-text">
           <span class="active">Here</span>
@@ -664,9 +620,9 @@
       <img
         src="7.png"
         alt="Decorative Right"
-        class="decorative-img left"
+        class="decorative-img right"
       />
-      <div class="overlay align-left">
+      <div class="overlay">
         <h2>Tokenomics</h2>
         <p><strong>Total Supply:</strong> 1 Billion</p>
         <p><strong>LP:</strong> Burnt</p>
@@ -680,9 +636,9 @@
       <img
         src="9.png"
         alt="Decorative Left"
-        class="decorative-img right"
+        class="decorative-img left"
       />
-      <div class="overlay align-right">
+      <div class="overlay">
         <div class="roadmap-content">
           <h2>Our Roadmap</h2>
           <ul class="timeline">
@@ -691,15 +647,15 @@
               <p>Launch of StudPepe, listing on dexscreener and pump.fun for initial community building</p>
             </li>
             <li class="timeline-item">
-              <h3>Q2 January 2025</h3>
+              <h3>Q2 Jan 2025</h3>
               <p>Introduction of staking rewards through Solbank</p>
             </li>
             <li class="timeline-item">
-              <h3>Q3 March 2025</h3>
+              <h3>Q3 March 2024</h3>
               <p>Listing on CMC, Coinbase, Crypto.com</p>
             </li>
             <li class="timeline-item">
-              <h3>Q4 July 2025</h3>
+              <h3>Q4 July 2024</h3>
               <p>Launch of StudPepe merchandise, and continuous community engagement</p>
             </li>
           </ul>
@@ -716,13 +672,13 @@
 
     <!-- HOW TO BUY SECTION -->
     <section id="how-to-buy">
-      <!-- Decorative Image (Left) -->
+      <!-- Decorative Image (Right) -->
       <img
         src="logo.png"
         alt="Decorative Left"
-        class="decorative-img left"
+        class="decorative-img right"
       />
-      <div class="overlay align-left">
+      <div class="overlay">
         <h2>How to Buy</h2>
         <!-- ACCORDION -->
         <div class="accordion" id="accordion">
@@ -780,7 +736,7 @@
         alt="Decorative Left"
         class="decorative-img left"
       />
-      <div class="overlay align-center fade-in">
+      <div class="overlay fade-in">
         <h2>About Us</h2>
         <p>
           StudPepe is more than just a memecoin; it's a movement. Leveraging the
