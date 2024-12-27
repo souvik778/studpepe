@@ -169,7 +169,7 @@
       width: 600px;
       height: 500px;
       object-fit: contain;
-      z-index: 1;
+      z-index: 4000;
       transition: transform 0.6s ease, opacity 0.6s ease;
       pointer-events: none;
       opacity: 0.9;
@@ -529,17 +529,101 @@
       footer {
         font-size: 1.2rem;
       }
+     
       .decorative-img {
+        position: absolute;
+        top: 21%;
+        transform: translateY(-50%) scale(0.8);
         width: 200px;
         height: 200px;
+        object-fit: contain;
+        z-index: 4000;
+        transition: transform 0.6s ease, opacity 0.6s ease;
+        pointer-events: none;
+        opacity: 0.9;
+      }
+      .dynamic-text {
+        font-family: "Oswald", sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1abc9c;
+        margin: 20px 0;
+        height: 3.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
       }
     }
-    @media (max-width: 768px) {
+    @media (max-width: 750px) {
+      .overlay {
+        background: rgba(0, 0, 0, 0.7);
+        padding: 50px;
+        border-radius: 8px;
+        max-width: auto;
+        width: 90%;
+        text-align: center;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+        transition: 
+          transform 0.3s ease, 
+          box-shadow 0.3s ease, 
+          background-color 0.3s ease;
+      }
+      .dynamic-text {
+        font-family: "Oswald", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1abc9c;
+        margin: 20px 0;
+        height: 3.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
       .decorative-img {
-        display: none;
+        position: absolute;
+        top: 13%;
+        transform: translateY(-50%) scale(0.8);
+        width: 200px;
+        height: 200px;
+        object-fit: contain;
+        z-index: 4000;
+        transition: transform 0.6s ease, opacity 0.6s ease;
+        pointer-events: none;
+        opacity: 0.9;
       }
     }
     @media (max-width: 390px) {
+      .dynamic-text {
+        font-family: "Oswald", sans-serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1abc9c;
+        margin: 20px 0;
+        height: 3.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .decorative-img {
+        position: absolute;
+        top: 13%;
+        transform: translateY(-50%) scale(0.8);
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        z-index: 4000;
+        transition: transform 0.6s ease, opacity 0.6s ease;
+        pointer-events: none;
+        opacity: 0.9;
+      }
       .logo {
         font-size: 1.8rem;
       }
@@ -561,14 +645,14 @@
       <!-- Desktop Nav Links -->
       <ul class="nav-links">
         <li><a href="#tokenomics">Tokenomics</a></li>
-        <li><a href="studpepe.pdf" target="_blank">Solid Proof audit</a></li>
+        <li><a href="studpepe.pdf" target="_blank" rel="noopener noreferrer">Solid Proof Audit</a></li>
         <li><a href="#roadmap">Roadmap</a></li>
         <li><a href="#how-to-buy">How to Buy</a></li>
         <li><a href="#about">About</a></li>
       </ul>
 
       <!-- Hamburger Menu Icon (shown on mobile) -->
-      <div class="hamburger" id="hamburger" aria-label="Toggle navigation">
+      <div class="hamburger" id="hamburger" aria-label="Toggle navigation" role="button" tabindex="0">
         <div></div>
         <div></div>
         <div></div>
@@ -578,7 +662,7 @@
     <!-- Slide-in Mobile Navigation Links -->
     <ul class="mobile-nav" id="mobile-nav">
       <li><a href="#tokenomics" onclick="toggleMobileNav()">Tokenomics</a></li>
-      <li><a href="studpepe.pdf" target="_blank" onclick="toggleMobileNav()">Solid Proof audit</a></li>
+      <li><a href="studpepe.pdf" target="_blank" rel="noopener noreferrer" onclick="toggleMobileNav()">Solid Proof Audit</a></li>
       <li><a href="#roadmap" onclick="toggleMobileNav()">Roadmap</a></li>
       <li><a href="#how-to-buy" onclick="toggleMobileNav()">How to Buy</a></li>
       <li><a href="#about" onclick="toggleMobileNav()">About</a></li>
@@ -596,20 +680,20 @@
         class="decorative-img left"
       />
       <div class="overlay">
-        <div class="logo" styles="text-align: center">&nbsp;&nbsp; Studpepe is </div>
+        <div class="logo" style="text-align: center">&nbsp;&nbsp; StudPepe is </div>
       
         <div class="dynamic-text">
           <span class="active">Here</span>
           <span>Secure</span>
-          <span>tax free</span>
-          <span>decentralized</span>
-          <span>fun</span>
-          <span>easy to trade</span>
-          <span>yours</span>
+          <span>Tax Free</span>
+          <span>Decentralized</span>
+          <span>Fun</span>
+          <span>Easy to Trade</span>
+          <span>Yours</span>
         </div>
         <div class="buttons">
-          <a href="https://dexscreener.com" target="_blank">Trade on DEX</a>
-          <a href="https://phantom.app/download" target="_blank">Download Phantom</a>
+          <a href="https://dexscreener.com" target="_blank" rel="noopener noreferrer">Trade on DEX</a>
+          <a href="https://phantom.app/download" target="_blank" rel="noopener noreferrer">Download Phantom</a>
         </div>
       </div>
     </section>
@@ -625,8 +709,8 @@
       <div class="overlay">
         <h2>Tokenomics</h2>
         <p><strong>Total Supply:</strong> 1 Billion</p>
-        <p><strong>LP:</strong> Burnt</p>
-        <p><strong>Tax:</strong> 0/0 (buy and sell)</p>
+        <p><strong>LP:</strong> Burned</p>
+        <p><strong>Tax:</strong> 0/0 (Buy and Sell)</p>
       </div>
     </section>
 
@@ -644,25 +728,26 @@
           <ul class="timeline">
             <li class="timeline-item">
               <h3>Q1 December 2024</h3>
-              <p>Launch of StudPepe, listing on dexscreener and pump.fun for initial community building</p>
+              <p>Launch of StudPepe, listing on DexScreener and Pump.Fun for initial community building.</p>
             </li>
             <li class="timeline-item">
-              <h3>Q2 Jan 2025</h3>
-              <p>Introduction of staking rewards through Solbank</p>
+              <h3>Q2 January 2025</h3>
+              <p>Introduction of staking rewards through Solbank.</p>
             </li>
             <li class="timeline-item">
-              <h3>Q3 March 2024</h3>
-              <p>Listing on CMC, Coinbase, Crypto.com</p>
+              <h3>Q3 March 2025</h3>
+              <p>Listing on CMC, Coinbase, Crypto.com.</p>
             </li>
             <li class="timeline-item">
-              <h3>Q4 July 2024</h3>
-              <p>Launch of StudPepe merchandise, and continuous community engagement</p>
+              <h3>Q4 July 2025</h3>
+              <p>Launch of StudPepe merchandise, and continuous community engagement.</p>
             </li>
           </ul>
         </div>
         <a
           href="studpepe.pdf"
           target="_blank"
+          rel="noopener noreferrer"
           class="solid-proof-btn"
         >
           View Solid Proof Audit
@@ -675,7 +760,7 @@
       <!-- Decorative Image (Right) -->
       <img
         src="logo.png"
-        alt="Decorative Left"
+        alt="Decorative Right"
         class="decorative-img right"
       />
       <div class="overlay">
@@ -766,6 +851,11 @@
     }
 
     hamburger.addEventListener("click", toggleMobileNav);
+    hamburger.addEventListener("keypress", function(event) {
+      if (event.key === "Enter" || event.key === " ") {
+        toggleMobileNav();
+      }
+    });
 
     // Close mobile nav if clicking outside
     window.addEventListener("click", function (event) {
